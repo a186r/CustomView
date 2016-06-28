@@ -14,7 +14,7 @@ import android.view.View;
 public class LayerView extends View {
 
     private Paint mPaint;
-    private int mViewHeight,mViewWidth; //控件宽高
+    private int mViewHeight, mViewWidth; //控件宽高
 
     public LayerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +34,6 @@ public class LayerView extends View {
         super.onDraw(canvas);
 
 
-
         /**
          * 绘制一个红色矩形
          */
@@ -43,7 +42,7 @@ public class LayerView extends View {
          * canvas一直称之为画布,其实更像是一个容器,如果吧canvas理解成画板,那么"层"就相当于是夹在画板上的一张张透明的纸,
          * 在android上就是一个个封装在canvas中的bitmap.
          */
-        canvas.drawRect(mViewWidth / 2f - 200,mViewHeight / 2f - 200,mViewWidth/2f +200 , mViewHeight/2f+200,mPaint);
+        canvas.drawRect(mViewWidth / 2f - 200, mViewHeight / 2f - 200, mViewWidth / 2f + 200, mViewHeight / 2f + 200, mPaint);
         /*
          * 保存并裁剪画布填充绿色
          */
@@ -70,10 +69,10 @@ public class LayerView extends View {
 //        canvas.save();
 //        canvas.saveLayer(0,0,mViewWidth,mViewHeight,mPaint);
 //        canvas.saveLayer(mViewWidth/2-100,mViewHeight/2-100,mViewWidth/2+100,mViewHeight/2+100,null,canvas.ALL_SAVE_FLAG);//之保存要保存的区域
-        canvas.saveLayerAlpha(0,0,mViewWidth,mViewHeight,120);//设置透明度为120
+        canvas.saveLayerAlpha(0, 0, mViewWidth, mViewHeight, 120);//设置透明度为120
         mPaint.setColor(Color.BLUE);
         canvas.rotate(8);//旋转画布30度
-        canvas.drawRect(mViewWidth /2f -100,mViewHeight/2f -100,mViewWidth/2f +100,mViewHeight/2+100,mPaint);
+        canvas.drawRect(mViewWidth / 2f - 100, mViewHeight / 2f - 100, mViewWidth / 2f + 100, mViewHeight / 2 + 100, mPaint);
 //        canvas.restore();
         canvas.restoreToCount(saveID2);//此方法可以接受一个特定的标识值,可以用来还原特定的栈空间
     }
