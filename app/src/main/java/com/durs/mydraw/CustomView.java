@@ -1,8 +1,11 @@
 package com.durs.mydraw;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -16,6 +19,12 @@ public class CustomView extends View implements Runnable {
 
     private Paint mPaint;
     private int radiu;
+    private Bitmap bitmap;
+    private int x, y;//位图绘制时左上角的坐标
+    private int w_screen;
+    private int h_screen;
+    private DisplayMetrics dm;
+    private Boolean isClick = false;
 
     /**
      * @param context 相当于一个信使,携带各类信息
@@ -23,7 +32,39 @@ public class CustomView extends View implements Runnable {
      */
     public CustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        dm = getResources().getDisplayMetrics();
+        w_screen = dm.widthPixels;
+        h_screen = dm.heightPixels;
         initPaint();
+        initRes(context);//初始化资源
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isClick) {
+                    mPaint.setColorFilter(null);
+                    isClick = false;
+                } else {
+                    mPaint.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0X00FFFF00));
+                    isClick = true;
+                }
+                //重绘
+                invalidate();
+            }
+        });
+    }
+
+
+    private void initRes(Context context) {
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.star);
+        /*
+         * 计算位图绘制时左上角的坐标使其位于屏幕中心
+		 * 屏幕坐标x轴向左偏移位图一半的宽度
+		 * 屏幕坐标y轴向上偏移位图一半的高度
+		 */
+//        x = w_screen - bitmap.getWidth() / 2;
+        x = 0;
+//        y = h_screen - bitmap.getHeight() / 2;
+        y = 0;
     }
 
     private void initPaint() {
@@ -51,13 +92,11 @@ public class CustomView extends View implements Runnable {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         super.onDraw(canvas);
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int w_screen = dm.widthPixels;
-        int h_screen = dm.heightPixels;
         // 绘制圆环
-        canvas.drawCircle(w_screen / 2, h_screen / 2, radiu, mPaint);
+//        canvas.drawCircle(w_screen / 2, h_screen / 2, radiu, mPaint);
+        // 绘制位图
+        canvas.drawBitmap(bitmap, x, y, mPaint);
     }
 
 
@@ -71,21 +110,21 @@ public class CustomView extends View implements Runnable {
     @Override
     public void run() {
         //确保不断执行绘制
-        while (true) {
-            try {
-                if (radiu < 200) {
-                    radiu += 10;
-                    //刷新view
-                    postInvalidate();
-                } else {
-                    radiu = 0;
-                }
-
-                //每20毫秒暂停一次
-                Thread.sleep(40);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        while (true) {
+//            try {
+//                if (radiu < 200) {
+//                    radiu += 10;
+//                    //刷新view
+//                    postInvalidate();
+//                } else {
+//                    radiu = 0;
+//                }
+//
+//                //每20毫秒暂停一次
+//                Thread.sleep(40);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }
