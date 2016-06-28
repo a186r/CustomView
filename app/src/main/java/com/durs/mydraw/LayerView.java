@@ -44,6 +44,17 @@ public class LayerView extends View {
          * 在android上就是一个个封装在canvas中的bitmap.
          */
         canvas.drawRect(mViewWidth / 2f - 200,mViewHeight / 2f - 200,mViewWidth/2f +200 , mViewHeight/2f+200,mPaint);
+        /*
+         * 保存并裁剪画布填充绿色
+         */
+        int saveID1 = canvas.save(Canvas.CLIP_SAVE_FLAG);
+        canvas.clipRect(mViewWidth / 2F - 200, mViewHeight / 2F - 200, mViewWidth / 2F + 200, mViewHeight / 2F + 200);
+        canvas.drawColor(Color.GREEN);
+
+        /*
+         * 保存画布并旋转后绘制一个蓝色的矩形
+         */
+        int saveID2 = canvas.save(Canvas.MATRIX_SAVE_FLAG);
 
         /**
          * 保存画布,并绘制一个蓝色矩形
@@ -56,12 +67,14 @@ public class LayerView extends View {
          *
          * 两者还有很多不同,虽然差别大,但是两者在一般应用上所能实现的功能是差不多的.
          */
-//      canvas.save();
+//        canvas.save();
 //        canvas.saveLayer(0,0,mViewWidth,mViewHeight,mPaint);
-        canvas.saveLayer(mViewWidth/2-100,mViewHeight/2-100,mViewWidth/2+100,mViewHeight/2+100,null,canvas.ALL_SAVE_FLAG);//之保存要保存的区域
+//        canvas.saveLayer(mViewWidth/2-100,mViewHeight/2-100,mViewWidth/2+100,mViewHeight/2+100,null,canvas.ALL_SAVE_FLAG);//之保存要保存的区域
+        canvas.saveLayerAlpha(0,0,mViewWidth,mViewHeight,120);//设置透明度为120
         mPaint.setColor(Color.BLUE);
         canvas.rotate(8);//旋转画布30度
         canvas.drawRect(mViewWidth /2f -100,mViewHeight/2f -100,mViewWidth/2f +100,mViewHeight/2+100,mPaint);
-        canvas.restore();
+//        canvas.restore();
+        canvas.restoreToCount(saveID2);//此方法可以接受一个特定的标识值,可以用来还原特定的栈空间
     }
 }
